@@ -1,0 +1,30 @@
+/***********************
+* Header
+***********************/
+
+.toper-head {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.siteName a {
+    text-decoration: none;
+    font-size: 2rem;
+    font-family: Arial, sans-serif;
+    color:#2b1240;
+}
+
+.tooled a {
+    text-decoration: none;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+    color: #2b1240;
+}
+
+@media screen and (min-width: 700px) {
+    .toper-head {
+        padding: 2rem;
+    }
+}

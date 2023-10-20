@@ -1,0 +1,33 @@
+/**********************
+* Navigation
+**********************/
+
+.navigation {
+    list-style: none;
+    padding: 0;
+    background-color: #2b1240;
+    display: flex;
+  }
+  
+  .navigation li {
+    flex: 1;
+  }
+  
+  .navigation a {
+    text-decoration: none;
+    color:white;
+    padding: 1rem 0;
+    display: block;
+    text-align: center;
+  }
+  
+  .navigation li:hover {
+    background-color: #3d1a59;
+  }
+
+  @media screen and (min-width: 700px) {
+    nav {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+  }

@@ -1,11 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title><%= vehicle.make %> <%= vehicle.model %></title>
-    <!-- Add other meta tags and CSS links here -->
-</head>
-<body>
-    <h1><%= vehicle.make %> <%= vehicle.model %></h1>
-    <!-- Display other vehicle details -->
-</body>
-</html>
+<div class="vehicle-detail-container">
+    <div class="vehicle-image-section">
+        <img src="/public<%= vehicle.inv_image %>" alt="<%= vehicle.inv_make %> <%= vehicle.inv_model %>">
+        <div class="vehicle-thumbnails">
+        </div>
+    </div>
+
+    <div class="vehicle-info-section">
+        <h1><%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %></h1>
+        <p class="price">$<%= vehicle.inv_price %></p>
+
+        <div class="vehicle-specs">
+            <p>Mileage: <%= vehicle.inv_miles %></p>
+            <p>Color: <%= vehicle.inv_color %></p>
+        </div>
+
+        <div class="actions">
+            <button>Start My Purchase</button>
+            <button>Contact Us</button>
+        </div>
+    </div>
+</div>

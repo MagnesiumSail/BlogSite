@@ -1,4 +1,4 @@
-const pool = require("../database/")
+const pool = require("../database")
 
 /* ***************************
  *  Get all classification data
@@ -30,7 +30,7 @@ async function getInventoryByClassificationId(classification_id) {
 async function getVehicleById(id) {
   try {
     const data = await pool.query(
-      `SELECT * FROM public.inventory WHERE inventory_id = $1`,
+      `SELECT * FROM public.inventory WHERE inv_id = $1`,
       [id]
     );
     if (data.rows.length) {

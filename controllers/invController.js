@@ -1,4 +1,5 @@
-const invModel = require("../models/inventory-model")
+const invModel = require("../models/inventoryModel");
+
 const utilities = require("../utilities/")
 
 const invCont = {}
@@ -22,9 +23,11 @@ invCont.buildByClassificationId = async function (req, res, next) {
 // inventoryController.js
 invCont.getVehicleById = async (req, res, next) => {
   try {
-    const vehicle = await inventoryModel.getVehicleById(req.params.id);
+    const vehicle = await invModel.getVehicleById(req.params.id);
     const htmlContent = utilities.wrapVehicleInHtml(vehicle);
-    res.render('inventory/vehicleDetail', { content: htmlContent });
+    const navData = await utilities.getNav();
+  res.render('inventory/vehicleDetail', { vehicle: vehicle, content: htmlContent, title: `${vehicle.inv_make} ${vehicle.inv_model}`, nav: navData });
+
   } catch (error) {
     next(error);
   }

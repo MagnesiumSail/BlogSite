@@ -1,4 +1,4 @@
-const invModel = require("../models/inventory-model")
+const invModel = require("../models/inventoryModel")
 const Util = {}
 
 /* ************************
@@ -65,7 +65,7 @@ Util.buildClassificationGrid = async function(data){
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
 // utilities/index.js
-exports.wrapVehicleInHtml = (vehicle) => {
+Util.wrapVehicleInHtml = (vehicle) => {
   // Return vehicle data wrapped in appropriate HTML tags.
 };
 

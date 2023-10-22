@@ -11,7 +11,7 @@ const expressLayouts = require("express-ejs-layouts")
 const app = express()
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
-const invRout = require("./routes/inventoryRoute")
+const inventoryRoute = require("./routes/inventoryRoute")
 
 /* ***********************
  * View Engine and Templates

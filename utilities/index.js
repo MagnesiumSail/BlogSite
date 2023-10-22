@@ -64,4 +64,10 @@ Util.buildClassificationGrid = async function(data){
  **************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
+// utilities/index.js
+exports.wrapVehicleInHtml = (vehicle) => {
+  // Return vehicle data wrapped in appropriate HTML tags.
+};
+
+
 module.exports = Util

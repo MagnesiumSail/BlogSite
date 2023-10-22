@@ -26,5 +26,11 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
+// inventoryModel.js
+exports.getVehicleById = async (id) => {
+  // Retrieve data from your database or API based on the given id.
+};
+
+
 
 module.exports = {getClassifications, getInventoryByClassificationId};

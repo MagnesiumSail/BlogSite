@@ -19,4 +19,16 @@ invCont.buildByClassificationId = async function (req, res, next) {
   })
 }
 
+// inventoryController.js
+exports.getVehicleById = async (req, res, next) => {
+  try {
+    const vehicle = await inventoryModel.getVehicleById(req.params.id);
+    const htmlContent = utilities.wrapVehicleInHtml(vehicle);
+    res.render('inventory/vehicleDetail', { content: htmlContent });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 module.exports = invCont

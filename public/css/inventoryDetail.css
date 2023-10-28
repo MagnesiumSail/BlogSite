@@ -83,7 +83,7 @@
     flex: 1; /* Let each button take up an equal amount of space */
     padding: 10px 20px; /* Add some padding inside each button */
     background-color: #e74c3c; /* Use the same color as the price */
-    color: #fff; /* Set the text color to white */
+    color: Black; /* Set the text color to white */
     border: none; /* Remove the default border */
     border-radius: 5px; /* Add rounded corners */
     cursor: pointer; /* Change the cursor to a hand when hovering over a button */

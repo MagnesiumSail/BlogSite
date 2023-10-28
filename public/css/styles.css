@@ -136,8 +136,12 @@
   margin: 20px 0;
 }
 
-.vehicle-specs p {
+.vehicle-specs {
   margin: 5px 0;
+  background-color:#ecebeb;
+  display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 10px;
 }
 
 .actions {

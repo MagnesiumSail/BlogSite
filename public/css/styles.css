@@ -5,6 +5,18 @@
   box-sizing: border-box;
 }
 
+.full-img {
+  width: 100%;
+}
+
+.image-container {
+  position: relative;
+}
+
+.image-container img {
+  display: block; /* Removes any space below the image */
+}
+
 .text-overlay {
   position: absolute;
   top: 0;

@@ -1,0 +1,102 @@
+/* Styling for the overall vehicle detail container */
+.vehicle-detail-container {
+    border: 1px solid #e0e0e0; /*Gray Border Lines */
+    padding: 20px; /* Padding */
+    max-width: 1200px; /* Don't go beyond this */
+    margin: 0 auto; /* Simple Maring */
+    display: flex; /* Use flexbox for the layout */
+    gap: 20px; /* Space between the image section and info section */
+    margin-top: 20px; /* Add some space at the top */
+    flex-wrap: wrap; /* Allow the sections to stack on smaller screens */
+}
+
+/* Styling for the vehicle image section */
+.vehicle-image-section {
+    position: relative; /* Allow positioning of child elements */
+    border-right: 1px solid #e0e0e0;
+    padding-right: 20px;
+}
+
+/* Styling for the main vehicle image */
+.vehicle-image-section img {
+    border: 1px solid #ccc; /* Add a border around the image */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow like before */
+    width: 100%;
+    height: auto;
+}
+
+/* Placeholder for the vehicle thumbnails */
+.vehicle-thumbnails {
+    display: flex;
+    position: absolute; /* Absolute position inside the vehicle-image-section */
+    bottom: 10px; /* Position 10px from the bottom */
+    left: 10px; /* Position 10px from the left */
+    gap: 10px;
+}
+
+/* Styling for the vehicle info section */
+.vehicle-info-section {
+    flex: 1; /* Let this section take up the other half of the space */
+}
+
+/* Styling for the vehicle title (h1) */
+.vehicle-info-section h1 {
+    color: #333; /* Set the title color */
+    font-size: 1.5em; /* Increase the font size */
+    margin-bottom: 20px; /* Add some space below the title */
+}
+
+/* Styling for the vehicle specs section */
+.vehicle-specs {
+    border: 1px solid #ccc; /* Add a border around the specs section */
+    padding: 10px; /* Add some padding inside the specs section */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow like before */
+    background-color:#ecebeb; 
+}
+
+/* Styling for the vehicle price */
+.price {
+    font-weight: bold; /* Make the price bold */
+    color: green; /* Set the price color, same as before */
+    margin-bottom: 20px; /* Add some space below the price */
+    font-size: 28px;
+    margin: 20px 0;
+}
+
+/* Styling for the description (h4) */
+.vehicle-specs h4 {
+    font-weight: normal; /* Keep the weight normal, not too bold */
+    color: #555; /* A slightly muted color for the description */
+    margin-bottom: 20px; /* Add some space below the description */
+}
+
+/* Styling for the actions/buttons section */
+.actions {
+    display: flex; /* Use flexbox for the layout */
+    gap: 10px; /* Space between each button */
+    flex-wrap: wrap; /* Allow the buttons to wrap onto the next line */
+    margin-top: 20px; /* Add some space above this section */
+}
+
+/* Styling for each button in the actions section */
+.actions button {
+    flex: 1; /* Let each button take up an equal amount of space */
+    padding: 10px 20px; /* Add some padding inside each button */
+    background-color: #e74c3c; /* Use the same color as the price */
+    color: #fff; /* Set the text color to white */
+    border: none; /* Remove the default border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change the cursor to a hand when hovering over a button */
+    transition: background-color 0.3s; /* Add a transition for hover effects */
+}
+
+/* Hover effect for each button */
+.actions button:hover {
+    background-color: green; /* Green the button color when hovered */
+}
+
+@media screen and (min-width: 700px) {
+    .vehicle-image-section {
+        flex: 1; /* Let this section take up half the space */
+    }
+}

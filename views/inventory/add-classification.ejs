@@ -1,0 +1,10 @@
+<h1 class="login-title">Add New Classification</h1>
+
+<form id="classificationForm" action="/your-post-route" onsubmit="return validateForm()" method="post">
+    <div class="form-group">
+        <label for="classificationName">Classification Name:</label>
+        <input type="text" id="classificationName" name="classificationName" class="form-control" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"/>
+    </div>
+    <p class="instruction-text">The classification name cannot contain spaces or special characters.</p>
+    <button type="submit" class="submit-button">Add Classification</button>
+</form>

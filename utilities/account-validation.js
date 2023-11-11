@@ -71,4 +71,19 @@ validate.checkRegData = async (req, res, next) => {
   next();
 };
 
+validate.checkClassAdd = async (req, res, next) => {
+  const { classification_name } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+  if(!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    res.render("inv/add/classification", {
+      errors,
+      title: "Classification Additions",
+      nav,
+      classification_name,
+    });
+  }
+}
+
 module.exports = validate;

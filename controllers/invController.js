@@ -35,6 +35,24 @@ if (!data || data.length === 0) {
   });
 }
 
+invCont.buildClassMngmnt = async (req, res, next) => {
+  let nav = await utilities.getNav();
+  res.render("inventory/add-classification", {
+    title: "Build Class Management",
+    nav,
+    errors: null,
+  });
+}
+
+invCont.buildInvMngmnt = async (req, res, next) => {
+  let nav = await utilities.getNav();
+  res.render("inventory/management", {
+    title: "Build Inventory Management",
+    nav,
+    errors: null,
+  });
+}
+
 
 // inventoryController.js
 invCont.getVehicleById = async (req, res, next) => {

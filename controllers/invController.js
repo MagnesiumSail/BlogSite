@@ -17,7 +17,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
 
 // Check if any data was returned
 if (!data || data.length === 0) {
-  return next({ status: 404, message: 'Classification not found' });  // Pass error to the next middleware (error handler)
+  return next({ status: 404, message: 'Classification not found' , errors: null,});  // Pass error to the next middleware (error handler)
 }
 
   // Generate a grid layout for the fetched inventory items

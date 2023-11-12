@@ -1,5 +1,4 @@
 const invModel = require("../models/inventoryModel");
-
 const utilities = require("../utilities/")
 
 const invCont = {}
@@ -45,13 +44,21 @@ invCont.buildClassMngmnt = async (req, res, next) => {
 }
 
 invCont.buildInvMngmnt = async (req, res, next) => {
-  let nav = await utilities.getNav();
-  res.render("inventory/management", {
-    title: "Build Inventory Management",
-    nav,
-    errors: null,
-  });
-}
+    try {
+        let nav = await utilities.getNav();
+        let classifications = await invModel.getClassifications();
+
+        res.render("inventory/add-inventory", {
+            title: "Build Inventory Management",
+            nav,
+            errors: null,
+        });
+    } catch (error) {
+        console.error('Error in buildInvMngmnt:', error);
+        res.status(500).send('Error building inventory management view');
+    }
+};
+
 
 // inventoryController.js
 invCont.getVehicleById = async (req, res, next) => {
@@ -78,7 +85,7 @@ if (!vehicle) {
 
 invCont.addClassification = async (req, res) => {
   try {
-    const classification_name = req.body.classificationName;
+    const classification_name = req.body.classification_name;
     console.log('Controller function reached with classification name:', classification_name);
 
     if (!classification_name) {
@@ -95,6 +102,49 @@ invCont.addClassification = async (req, res) => {
     res.status(500).send('Error adding classification');
 }
 };
+
+invCont.addInventory = async (req, res) => {
+  try {
+      // Extracting inventory data from request body
+      const {
+          inv_make,
+          inv_model,
+          inv_year,
+          inv_description,
+          inv_image,
+          inv_thumbnail,
+          inv_price,
+          inv_miles,
+          inv_color,
+          classification_id
+      } = req.body;
+
+      // Calling the model function to insert the data
+      await invModel.insertInventoryItem({
+          inv_make,
+          inv_model,
+          inv_year,
+          inv_description,
+          inv_image,
+          inv_thumbnail,
+          inv_price,
+          inv_miles,
+          inv_color,
+          classification_id
+      });
+
+      console.log('Inventory item inserted successfully');
+      // Redirecting or sending a success response
+      req.flash('success', 'Inventory item added successfully');
+      res.redirect('/inv/add/inventory');
+  } catch (error) {
+      console.error('Error in addInventory controller:', error);
+      // Sending an error response or redirecting to an error page
+      req.flash('error', 'Error adding inventory item');
+      res.redirect('/inv/add/inventory');
+  }
+};
+
 
 
 module.exports = invCont

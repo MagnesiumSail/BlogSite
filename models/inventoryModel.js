@@ -40,7 +40,7 @@ async function getVehicleById(id) {
     }
   } catch (error) {
     console.error("getVehicleById error: " + error);
-    throw error; // make sure you propagate the error so your controller or routes can handle it
+    throw error;
   }
 }
 

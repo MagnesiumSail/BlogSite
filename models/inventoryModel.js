@@ -44,6 +44,22 @@ async function getVehicleById(id) {
   }
 }
 
+insertClassification = async (classificationName) => {
+  try {
+      console.log('Model function called with classificationName:', classificationName);
+
+      const sql = "INSERT INTO classification (classification_name) VALUES ($1) RETURNING *";
+      const result = await pool.query(sql, [classificationName]);
+
+      return result.rows[0];
+  } catch (error) {
+      console.error('Error in model:', error);
+      throw error; // Propagate the error to be handled by the caller
+  }
+};
 
 
-module.exports = {getClassifications, getInventoryByClassificationId, getVehicleById};
+
+
+
+module.exports = {getClassifications, getInventoryByClassificationId, getVehicleById, insertClassification};

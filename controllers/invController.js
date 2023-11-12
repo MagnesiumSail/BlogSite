@@ -53,7 +53,6 @@ invCont.buildInvMngmnt = async (req, res, next) => {
   });
 }
 
-
 // inventoryController.js
 invCont.getVehicleById = async (req, res, next) => {
   try {
@@ -77,6 +76,25 @@ if (!vehicle) {
   }
 };
 
+invCont.addClassification = async (req, res) => {
+  try {
+    const classification_name = req.body.classificationName;
+    console.log('Controller function reached with classification name:', classification_name);
+
+    if (!classification_name) {
+        console.error('Classification name is missing or null');
+        return res.status(400).send('Classification name is required');
+    }
+
+    await invModel.insertClassification(classification_name);
+
+    console.log('Classification inserted successfully');
+    res.redirect('/inv/add/classification');
+} catch (error) {
+    console.error('Error in controller:', error);
+    res.status(500).send('Error adding classification');
+}
+};
 
 
 module.exports = invCont

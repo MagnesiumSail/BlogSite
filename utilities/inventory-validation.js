@@ -1,6 +1,7 @@
 const { body, validationResult } = require('express-validator');
 const utilities = require(".");
 const validate = {};
+const invModel = require("../models/inventoryModel");
 
 validate.classificationNameRules = () => {
     console.log("Started first check");
@@ -112,14 +113,21 @@ validate.inventoryAddRules = () => {
 };
 
 validate.checkInventoryData = async (req, res, next) => {
+    console.log("Got to checkInventoryData")
+    
     const errors = validationResult(req);
+    //console.log(errors)
 
     if (!errors.isEmpty()) {
+        console.log("Got Into CheckInvData")
         let nav = await utilities.getNav();
+        let classificationsResult = await invModel.getClassifications();
+        let classifications = classificationsResult.rows ? classificationsResult.rows : [];
         res.render('inventory/add-inventory', {
             title: 'Build Inventory Management',
             nav,
             errors: errors.array(),
+            classifications,
             // Include existing form data for sticky form behavior
             inventoryData: req.body,
         });

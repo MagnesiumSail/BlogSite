@@ -6,10 +6,9 @@
 
 <form
   id="inventoryForm"
-  action="/inv/add/classification"
-  method="post"
-  enctype="multipart/form-data"
->
+  action="/inv/add/inventory"
+  onsubmit="return validateForm()"
+  method="post">
   <div class="form-group">
     <label for="invMake">Make:</label>
     <input
@@ -18,7 +17,6 @@
       name="inv_make"
       class="form-control"
       required
-      value="<%= typeof inv_make != 'undefined' ? inv_make : '' %>"
     />
   </div>
   <div class="form-group">
@@ -29,7 +27,6 @@
       name="inv_model"
       class="form-control"
       required
-      value="<%= typeof inv_model != 'undefined' ? inv_model : '' %>"
     />
   </div>
   <div class="form-group">
@@ -40,7 +37,6 @@
       name="inv_year"
       class="form-control"
       required
-      value="<%= typeof inv_year != 'undefined' ? inv_year : '' %>"
     />
   </div>
   <div class="form-group">
@@ -62,7 +58,6 @@
       name="inv_price"
       class="form-control"
       required
-      value="<%= typeof inv_price != 'undefined' ? inv_price : '' %>"
     />
   </div>
   <div class="form-group">
@@ -73,7 +68,6 @@
       name="inv_miles"
       class="form-control"
       required
-      value="<%= typeof inv_miles != 'undefined' ? inv_miles : '' %>"
     />
   </div>
   <div class="form-group">
@@ -84,7 +78,6 @@
       name="inv_color"
       class="form-control"
       required
-      value="<%= typeof inv_color != 'undefined' ? inv_color : '' %>"
     />
   </div>
   <div class="form-group">
@@ -95,11 +88,14 @@
       class="form-control"
       required
     >
-      <% classifications.forEach(function(classification) { %>
+      <% if (Array.isArray(classifications)) { %> <%
+      classifications.forEach(function(classification) { %>
       <option value="<%= classification.classification_id %>">
         <%= classification.classification_name %>
       </option>
-      <% }); %>
+      <% }); %> <% } else { %>
+      <p>Error: Classifications data is not available.</p>
+      <% } %>
     </select>
   </div>
   <div class="form-group">
@@ -110,7 +106,6 @@
       name="inv_image"
       class="form-control"
       required
-      value="<%= typeof inv_image != 'undefined' ? inv_image : '' %>"
     />
   </div>
   <div class="form-group">
@@ -121,7 +116,6 @@
       name="inv_thumbnail"
       class="form-control"
       required
-      value="<%= typeof inv_thumbnail != 'undefined' ? inv_thumbnail : '' %>"
     />
   </div>
   <button type="submit" class="submit-button">Add Inventory Item</button>

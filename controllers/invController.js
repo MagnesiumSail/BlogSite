@@ -34,6 +34,16 @@ if (!data || data.length === 0) {
   });
 }
 
+invCont.buildMngmnt = async (req, res, next) => {
+  let nav = await utilities.getNav();
+  res.render("inventory/management", {
+    title: "Build Management",
+    nav,
+    errors: null,
+  });
+}
+
+
 invCont.buildClassMngmnt = async (req, res, next) => {
   let nav = await utilities.getNav();
   res.render("inventory/add-classification", {
@@ -44,20 +54,26 @@ invCont.buildClassMngmnt = async (req, res, next) => {
 }
 
 invCont.buildInvMngmnt = async (req, res, next) => {
-    try {
-        let nav = await utilities.getNav();
-        let classifications = await invModel.getClassifications();
+  console.log("Went Wrong Way!");
+  try {
+      let nav = await utilities.getNav();
+      let classificationsResult = await invModel.getClassifications();
 
-        res.render("inventory/add-inventory", {
-            title: "Build Inventory Management",
-            nav,
-            errors: null,
-        });
-    } catch (error) {
-        console.error('Error in buildInvMngmnt:', error);
-        res.status(500).send('Error building inventory management view');
-    }
+      // Process the result to extract the array
+      let classifications = classificationsResult.rows ? classificationsResult.rows : [];
+
+      res.render("inventory/add-inventory", {
+          title: "Build Inventory Management",
+          nav,
+          errors: null,
+          classifications // Now this should be an array
+      });
+  } catch (error) {
+      console.error('Error in buildInvMngmnt:', error);
+      res.status(500).send('Error building inventory management view');
+  }
 };
+
 
 
 // inventoryController.js
@@ -104,6 +120,7 @@ invCont.addClassification = async (req, res) => {
 };
 
 invCont.addInventory = async (req, res) => {
+  console.log("Got to add inv")
   try {
       // Extracting inventory data from request body
       const {

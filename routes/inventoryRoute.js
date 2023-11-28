@@ -23,6 +23,7 @@ router.get("/detail/:id", invController.getVehicleById);
 router.get("/add/classification", invController.buildClassMngmnt);
 router.get("/add/inventory", invController.buildInvMngmnt);
 router.get("/", invController.buildMngmnt);
+router.post("/", invController.buildMngmnt);
 router.post(
   "/add/classification",
   (req, res, next) => {

@@ -62,17 +62,22 @@ invCont.buildInvMngmnt = async (req, res, next) => {
       // Process the result to extract the array
       let classifications = classificationsResult.rows ? classificationsResult.rows : [];
 
+      // Check if there are errors in the request body
+      let errors = req.body.errors || [];
+
       res.render("inventory/add-inventory", {
           title: "Build Inventory Management",
           nav,
-          errors: null,
-          classifications // Now this should be an array
+          errors: errors,
+          classifications, // Now this should be an array
+          inventoryData: req.body // Include the previously submitted form data
       });
   } catch (error) {
       console.error('Error in buildInvMngmnt:', error);
       res.status(500).send('Error building inventory management view');
   }
 };
+
 
 
 

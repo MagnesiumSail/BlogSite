@@ -126,7 +126,7 @@ validate.checkInventoryData = async (req, res, next) => {
         res.render('inventory/add-inventory', {
             title: 'Build Inventory Management',
             nav,
-            errors: errors.array(),
+            errors,
             classifications,
             // Include existing form data for sticky form behavior
             inventoryData: req.body,

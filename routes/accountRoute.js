@@ -5,6 +5,8 @@ const utilities = require("../utilities/");
 const accountController = require("../controllers/accountController");
 const regValidate = require("../utilities/account-validation");
 
+
+router.get("/", utilities.handleErrors(accountController.buildAccount));
 // Route to build inventory by account view
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
 // Route to build register by register view
@@ -20,9 +22,9 @@ router.post(
 );
 router.post(
   "/login",
-  regValidate.registationRules(),
-  regValidate.checkRegData,
-  utilities.handleErrors(accountController.buildLogin)
+  regValidate.loginRules(),
+  regValidate.checkLoginData,
+  utilities.handleErrors(accountController.accountLogin)
 );
 
 

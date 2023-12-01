@@ -17,7 +17,8 @@ const brickRoute = require("./routes/BrickRoute");
 const accountRoute = require("./routes/accountRoute");
 const session = require("express-session");
 const pool = require('./database/');
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 /************************
  * Middeware
@@ -44,6 +45,7 @@ app.use(function(req, res, next){
 // body parser
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(cookieParser()) // for parsing cookies package
 
 /* ***********************
  * View Engine and Templates
@@ -66,7 +68,6 @@ app.use("/inv", utilities.handleErrors(inventoryRoute))
 app.use("/Brick", utilities.handleErrors(brickRoute))
 // account route
 app.use("/account", utilities.handleErrors(accountRoute))
-
 
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})

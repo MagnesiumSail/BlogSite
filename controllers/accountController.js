@@ -26,7 +26,7 @@ async function buildRegister(req, res, next) {
   });
 }
 /* ****************************************
- *  Deliver account view
+ *  Deliver Management view
  * *************************************** */
 async function buildAccount(req, res, next) {
   let nav = await utilities.getNav();
@@ -95,7 +95,7 @@ async function registerAccount(req, res) {
 async function accountLogin(req, res) {
   // Retrieve navigation data
   let nav = await utilities.getNav()
-
+  console.log("Wierdner");
   // Extract email and password from the request body
   const { account_email, account_password } = req.body
 
@@ -116,7 +116,9 @@ async function accountLogin(req, res) {
 
   try {
     // Compare the provided password with the stored hashed password
+    console.log("test 1");
     if (await bcrypt.compare(account_password, accountData.account_password)) {
+      console.log("test 3");
       // If the passwords match, remove the password from the account data
       delete accountData.account_password
 
@@ -130,9 +132,11 @@ async function accountLogin(req, res) {
       return res.redirect("/account/")
     }
   } catch (error) {
+    console.log("test 4");
     // If there is an error in the try block, throw an access forbidden error
     return new Error('Access Forbidden')
   }
+ console.log("test5");
 }
 
 module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccount };

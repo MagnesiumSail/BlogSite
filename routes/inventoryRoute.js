@@ -17,6 +17,8 @@ router.post(
 );
 // Route to build inventory by classification view
 router.get("/type/:classificationId", invController.buildByClassificationId);
+// Route to display a list of vehicles by classification
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 // inventoryRoute.js
 router.get("/detail/:id", invController.getVehicleById);
 // management route

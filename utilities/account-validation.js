@@ -120,8 +120,14 @@ validate.checkLoginData = async (req, res, next) => {
   let errors = [];
   errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log("errors: ")
+    console.log(errors);
     let nav = await utilities.getNav();
-    res.render("account/management", {
+    req.flash(
+      "notice",
+      `Sorry, there was an error processing the login. Please try again.`
+    );
+    res.render("account/login", {
       errors,
       title: "Login",
       nav,

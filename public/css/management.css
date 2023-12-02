@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  h1.inv-title, h2.inv-manage-header {
+    color: #333;
+    text-align: center;
+  }
+  
+  .inv-add-classification-link, .inv-add-inventory-link {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    width: 200px;
+    border-radius: 0;
+  }
+  
+  .inv-add-classification-link:hover, .inv-add-inventory-link:hover {
+    background-color: #45a049;
+  }
+  
+  .inv-select-instruction {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .inv-classification-select {
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 0;
+  }
+  
+  .inv-inventory-table {
+    width: 90%;
+    border-collapse: collapse;
+    margin: 0 20px; /* Add space on the left and right sides */
+  }
+  
+  
+  .inv-inventory-table th, .inv-inventory-table td {
+    border: 2px solid #ddd; /* Increase border thickness */
+    padding: 8px;
+  }
+  .inv-inventory-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .inv-inventory-table tr:hover {
+    background-color: #ddd;
+  }
+  
+  .inv-noscript-warning {
+    color: red;
+    text-align: center;
+  }

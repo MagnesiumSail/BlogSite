@@ -5,7 +5,9 @@ const utilities = require("../utilities/");
 const accountController = require("../controllers/accountController");
 const regValidate = require("../utilities/account-validation");
 
-
+// Route to build account editor
+router.get("/update", utilities.checkLogin, utilities.handleErrors(accountController.buildAccountEditor));
+// Route to build account view
 router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildAccount))
 // Route to build inventory by account view
 router.get("/login", utilities.handleErrors(accountController.buildLogin));

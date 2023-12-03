@@ -1,2 +1,9 @@
 <%- messages() %>
-<h1>You're logged in!</h1>
+<h2>Welcome <%= accountName %></h2>
+
+<% if (accountType === "Employee" || accountType === "Admin") { %>
+  <h3>Inventory Management</h3>
+  <p><a href="/inv">Access Inventory Management</a></p>
+<% } %>
+
+<p><a href="/account/update?id=<%= clientId %>">Update Account Information</a></p>

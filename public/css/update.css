@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .update-account-form,
+  .update-password-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .update-account-form h2,
+  .update-password-form h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .update-account-form label,
+  .update-password-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .update-account-form input,
+  .update-password-form input {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .update-account-form button,
+  .update-password-form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .update-account-form button:hover,
+  .update-password-form button:hover {
+    background-color: #0056b3;
+  }

@@ -19,6 +19,7 @@ const session = require("express-session");
 const pool = require('./database/');
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const jwt = require('jsonwebtoken');
 
 /************************
  * Middeware
@@ -47,6 +48,35 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(cookieParser()) // for parsing cookies package
 app.use(utilities.checkJWTToken)
+app.use((req, res, next) => {
+  const token = req.cookies.jwt;
+
+  if (token) {
+    try {
+      // Verify the token
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      //console.log(decoded)
+      // If verification is successful, the user is logged in
+      res.locals.clientIsLoggedIn = true;
+      res.locals.accountData = decoded;
+      res.locals.accountName = decoded.account_firstname;
+      res.locals.accountLName = decoded.account_lastname;
+      res.locals.accountEmail = decoded.account_email;
+      res.locals.accountType = decoded.account_type;
+      res.locals.clientId = decoded.account_id;
+    } catch (err) {
+      // If verification fails, the user is not logged in
+      res.locals.clientIsLoggedIn = false;
+
+    }
+  } else {
+    // If there's no token, the user is not logged in
+    res.locals.clientIsLoggedIn = false;
+  }
+
+  next();
+});
+
 
 /* ***********************
  * View Engine and Templates

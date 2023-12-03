@@ -4,28 +4,39 @@ const router = new express.Router();
 const utilities = require("../utilities/");
 const invController = require("../controllers/invController");
 const validate = require("../utilities/inventory-validation");
+const accountvalidate = require("../utilities/account-validation");
 
 router.post(
   "/add/inventory",(req, res, next) => {
     console.log("Server received form data:", req.body);
-    console.log("WHY IS THERE NO BODY????? I have spent 8 hours trying to fix this. this class is not worth the time sink the work load is 10x any other 3 credit at BYUI, and brother robertson does not teach me 1/100000 of the information I need to be able to complete any of these assignments, especially the debugging aspect because that's 99.99% of what my time is spent on")
     next();
 },
   validate.inventoryAddRules(),
   validate.checkInventoryData,
-  invController.addInventory
+  utilities.handleErrors(invController.addInventory)
 );
+
+//Route for delete inventory
+router.get("/delete/:invId", accountvalidate.checkAccountType, utilities.handleErrors(invController.buildDelInv));
+//route for handling deletes
+router.post("/delete/inventory", accountvalidate.checkAccountType, utilities.handleErrors(invController.deleteInventory));
+// Route to handle updates
+router.post("/update/", accountvalidate.checkAccountType, validate.inventoryAddRules(),
+validate.checkUpdateData,
+utilities.handleErrors(invController.updateInventory))
+// Route to build inventory editor
+router.get("/edit/:invId", accountvalidate.checkAccountType, utilities.handleErrors(invController.buildEditInv));
 // Route to build inventory by classification view
-router.get("/type/:classificationId", invController.buildByClassificationId);
+router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
 // Route to display a list of vehicles by classification
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 // inventoryRoute.js
-router.get("/detail/:id", invController.getVehicleById);
+router.get("/detail/:id", utilities.handleErrors(invController.getVehicleById));
 // management route
-router.get("/add/classification", invController.buildClassMngmnt);
-router.get("/add/inventory", invController.buildInvMngmnt);
-router.get("/", invController.buildMngmnt);
-router.post("/", invController.buildMngmnt);
+router.get("/add/classification", accountvalidate.checkAccountType, utilities.handleErrors(invController.buildClassMngmnt));
+router.get("/add/inventory", accountvalidate.checkAccountType, utilities.handleErrors(invController.buildInvMngmnt));
+router.get("/", accountvalidate.checkAccountType, utilities.handleErrors(invController.buildMngmnt));
+router.post("/", accountvalidate.checkAccountType, utilities.handleErrors(invController.buildMngmnt));
 router.post(
   "/add/classification",
   (req, res, next) => {
@@ -33,6 +44,7 @@ router.post(
     
     next();
   },
+  accountvalidate.checkAccountType, 
   validate.classificationNameRules(),
   validate.checkClassAdd,
   invController.addClassification

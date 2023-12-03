@@ -1,10 +1,9 @@
-<h1 class="login-title">Add New Inventory Item</h1>
-
+<h1 class="inv-title"><%= title %></h1>
 <%- messages() %>
 
 <form
-  id="inventoryForm"
-  action="/inv/add/inventory"
+  id="updateForm"
+  action="/inv/update/"
   onsubmit="return validateForm()"
   method="post"
   class="add-inventory-form">
@@ -15,6 +14,7 @@
       id="invMake"
       name="inv_make"
       class="form-control"
+      value="<%= inv_make %>"
       required
     />
   </div>
@@ -25,6 +25,7 @@
       id="invModel"
       name="inv_model"
       class="form-control"
+      value="<%= inv_model %>"
       required
     />
   </div>
@@ -35,6 +36,7 @@
       id="invYear"
       name="inv_year"
       class="form-control"
+      value="<%= inv_year %>"
       required
     />
   </div>
@@ -44,6 +46,7 @@
       id="invDescription"
       name="inv_description"
       class="form-control"
+      value="<%= inv_description %>"
       required
     >
 <%= typeof inv_description != 'undefined' ? inv_description : '' %></textarea
@@ -56,6 +59,7 @@
       id="invPrice"
       name="inv_price"
       class="form-control"
+      value="<%= inv_price %>"
       required
     />
   </div>
@@ -66,6 +70,7 @@
       id="invMiles"
       name="inv_miles"
       class="form-control"
+      value="<%= inv_miles %>"
       required
     />
   </div>
@@ -76,6 +81,7 @@
       id="invColor"
       name="inv_color"
       class="form-control"
+      value="<%= inv_color %>"
       required
     />
   </div>
@@ -87,14 +93,11 @@
       class="form-control"
       required
     >
-      <% if (Array.isArray(classifications)) { %> <%
-      classifications.forEach(function(classification) { %>
-      <option value="<%= classification.classification_id %>">
+    <% classifications.forEach(function(classification) { %>
+      <option value="<%= classification.classification_id %>" <%= classification_id == classification.classification_id ? 'selected' : '' %>>
         <%= classification.classification_name %>
       </option>
-      <% }); %> <% } else { %>
-      <p>Error: Classifications data is not available.</p>
-      <% } %>
+    <% }); %>
     </select>
   </div>
   <div class="form-group">
@@ -104,6 +107,7 @@
       id="invImage"
       name="inv_image"
       class="form-control"
+      value="<%= inv_image %>"
       required
     />
   </div>
@@ -114,8 +118,14 @@
       id="invThumbnail"
       name="inv_thumbnail"
       class="form-control"
+      value="<%= inv_thumbnail %>"
       required
     />
   </div>
-  <button type="submit" class="submit-button">Add Inventory Item</button>
+  <button type="submit" class="submit-button" disabled>Edit Inventory Item</button>
+  <input type="hidden" name="inv_id"
+<% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+<% } %>>
 </form>
+
+<script src="../../js/inv-update.js"></script>

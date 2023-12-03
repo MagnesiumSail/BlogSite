@@ -95,13 +95,10 @@ async function registerAccount(req, res) {
 async function accountLogin(req, res) {
   // Retrieve navigation data
   let nav = await utilities.getNav()
-  console.log("Wierdner");
   // Extract email and password from the request body
   const { account_email, account_password } = req.body
-
   // Fetch account data based on the provided email
   const accountData = await accountModel.getAccountByEmail(account_email)
-
   // If no account data is found, send an error message and render the login page
   if (!accountData) {
     req.flash("notice", "Please check your credentials and try again.")
@@ -113,30 +110,34 @@ async function accountLogin(req, res) {
     })
     return
   }
-
   try {
     // Compare the provided password with the stored hashed password
-    console.log("test 1");
     if (await bcrypt.compare(account_password, accountData.account_password)) {
-      console.log("test 3");
       // If the passwords match, remove the password from the account data
       delete accountData.account_password
-
       // Generate an access token using JWT
       const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
-
       // Set the access token in a cookie with HTTP-only flag and a max age
       res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
-
       // Redirect to the account page after successful login
       return res.redirect("/account/")
     }
   } catch (error) {
-    console.log("test 4");
     // If there is an error in the try block, throw an access forbidden error
     return new Error('Access Forbidden')
   }
- console.log("test5");
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccount };
+/* ****************************************
+ *  build accout edit view
+ * ************************************ */
+async function buildAccountEditor(req, res) {
+  let nav = await utilities.getNav();
+  res.render("account/update", {
+    title: "Account",
+    nav,
+    errors: null,
+  });
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccount, buildAccountEditor };

@@ -113,13 +113,11 @@ validate.inventoryAddRules = () => {
 };
 
 validate.checkInventoryData = async (req, res, next) => {
-    console.log("Got to checkInventoryData")
     
     const errors = validationResult(req);
     //console.log(errors)
 
     if (!errors.isEmpty()) {
-        console.log("Got Into CheckInvData")
         let nav = await utilities.getNav();
         let classificationsResult = await invModel.getClassifications();
         let classifications = classificationsResult.rows ? classificationsResult.rows : [];
@@ -136,6 +134,30 @@ validate.checkInventoryData = async (req, res, next) => {
     }
 };
 
+
+validate.checkUpdateData = async (req, res, next) => {
+    
+    const errors = validationResult(req);
+    //console.log(errors)
+
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav();
+        let classificationsResult = await invModel.getClassifications();
+        let classifications = classificationsResult.rows ? classificationsResult.rows : [];
+        let inv_id = req.body.inv_id;
+        res.render('inventory/edit-inventory', {
+            title: 'Edit Inventory Management',
+            nav,
+            errors,
+            classifications,
+            // Include existing form data for sticky form behavior
+            inventoryData: req.body,
+            inv_id,
+        });
+    } else {
+        next();
+    }
+};
 
 
 module.exports = validate

@@ -3,6 +3,22 @@ const { body, validationResult } = require("express-validator");
 const validate = {};
 const accountModel = require("../models/account-model");
 
+validate.checkAccountType = (req, res, next) => {
+  // Get the decoded JWT from res.locals.accountData
+  const accountData = res.locals.accountData;
+
+  // Check if the account type is 'Employee' or 'Admin'
+  if (accountData && (accountData.account_type === 'Employee' || accountData.account_type === 'Admin')) {
+    // If it is, proceed to the route handler
+    next();
+  } else {
+    req.flash("notice", "You do not have permission to access this page.");
+    res.redirect("/account/login")
+    // If it's not, send an error message or redirect
+    //res.status(403).send('Access denied. You do not have permission to access this page.');
+  }
+};
+
 /*  **********************************
  *  Registration Data Validation Rules
  * ********************************* */

@@ -1,0 +1,62 @@
+<h1 class="inv-title"><%= title %></h1>
+<%- messages() %>
+
+<form
+  id=deleteForm"
+  action="/inv/delete/inventory"
+  onsubmit="return validateForm()"
+  method="post"
+  class="add-inventory-form">
+  <div class="form-group">
+    <label for="invMake">Make:</label>
+    <input
+      type="text"
+      id="invMake"
+      name="inv_make"
+      class="form-control"
+      value="<%= inv_make %>"
+      readonly
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="invModel">Model:</label>
+    <input
+      type="text"
+      id="invModel"
+      name="inv_model"
+      class="form-control"
+      value="<%= inv_model %>"
+      readonly
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="invYear">Year:</label>
+    <input
+      type="number"
+      id="invYear"
+      name="inv_year"
+      class="form-control"
+      value="<%= inv_year %>"
+      readonly
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="invPrice">Price:</label>
+    <input
+      type="number"
+      id="invPrice"
+      name="inv_price"
+      class="form-control"
+      value="<%= inv_price %>"
+      readonly
+      required
+    />
+  <p>Warning! This delete is permanent! Are you sure?</p>
+  <button type="submit" class="submit-button">Delete Inventory Item</button>
+  <input type="hidden" name="inv_id"
+<% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+<% } %>>
+</form>

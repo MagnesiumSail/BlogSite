@@ -1,29 +1,29 @@
 <%- messages() %>
-<h1><%= title %></h1>
+<h1 class="centered">Editing <%= accountName %>'s Account</h1>
 
-  <h2>Account Update</h2>
-  <form id="account-update-form" action="/account/update" method="POST">
+  <h3 class="centered">Account Update</h3>
+  <form id="account-update-form" action="/account/update" class="update-account-form" method="POST">
     <label for="first-name">First Name:</label>
-    <input type="text" id="first-name" name="first-name" value="<%= accountName %>" required>
+    <input type="text" id="account_firstname" name="account_firstname" value="<%= accountName %>" required>
 
     <label for="last-name">Last Name:</label>
-    <input type="text" id="last-name" name="last-name" value="<%= accountLName %>" required>
+    <input type="text" id="account_lastname" name="account_lastname" value="<%= accountLName %>" required>
 
     <label for="email">Email Address:</label>
-    <input type="email" id="email" name="email" value="<%= accountEmail %>" required>
+    <input type="email" id="account_email" name="account_email" value="<%= accountEmail %>" required>
 
-    <input type="hidden" name="account-id" value="<%= clientId %>">
+    <input type="hidden" name="account_id" value="<%= clientId %>">
 
     <input type="submit" value="Update Account">
   </form>
 
-  <h2>Change Password</h2>
-  <form id="change-password-form" action="/account/change-password" method="POST">
+  <h3 class="centered">Change Password</h3>
+  <form id="change-password-form" action="/account/change-password" class="update-password-form" method="POST">
     <p>By entering a new password, your current password will be changed.</p>
-    <p>Password requirements: [Add your password requirements here]</p>
+    <p>Password requirements: must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character</p>
 
     <label for="new-password">New Password:</label>
-    <input type="password" id="new-password" name="new-password" required>
+    <input type="password" id="new-password" name="new-password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>
 
     <input type="hidden" name="account-id" value="<%= clientId %>">
 

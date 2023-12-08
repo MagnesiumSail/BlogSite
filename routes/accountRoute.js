@@ -7,6 +7,8 @@ const regValidate = require("../utilities/account-validation");
 
 // Route to build account editor
 router.get("/update", utilities.checkLogin, utilities.handleErrors(accountController.buildAccountEditor));
+// Route to handle update account
+router.post("/update", utilities.checkLogin, utilities.handleErrors(accountController.updateAccount));
 // Route to build account view
 router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildAccount))
 // Route to build inventory by account view

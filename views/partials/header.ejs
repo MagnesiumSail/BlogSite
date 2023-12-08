@@ -6,7 +6,8 @@
     <div class="tooled" id="tools">
         <% if (clientIsLoggedIn) { %>
             <!-- Visible only when the client is logged in -->
-            <a href="/account-management">Welcome <%= accountName %> | </a>
+            <!-- I need to do all the checking here, not passing a variable named accountName-->
+            <a href="/account">Welcome <%= accountName %> | </a>
             <a href="/logout">Logout</a>
           <% } else { %>
             <!-- Visible only when the client is not logged in -->

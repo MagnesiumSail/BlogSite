@@ -134,10 +134,48 @@ async function accountLogin(req, res) {
 async function buildAccountEditor(req, res) {
   let nav = await utilities.getNav();
   res.render("account/update", {
-    title: "Account",
+    title: "Edit Account",
     nav,
     errors: null,
   });
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccount, buildAccountEditor };
+/* ****************************************
+ *  Process account update
+ * ************************************ */
+async function updateAccount(req, res) {
+  let nav = await utilities.getNav();
+  const regResult = await accountModel.updateAccount(
+    req.body.account_firstname,
+    req.body.account_lastname,
+    req.body.account_email,
+    req.body.account_id,
+  );
+  
+  if (regResult) {
+    // Decode the JWT
+    const decoded = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET);
+
+    // Update the account name
+    decoded.account_firstname = req.body.account_firstname;
+
+    // Sign a new JWT with the updated data
+    const newToken = jwt.sign(decoded, process.env.ACCESS_TOKEN_SECRET);
+
+    // Set the new JWT as a cookie
+    res.cookie('jwt', newToken, { httpOnly: true });
+
+    // Update res.locals.accountName
+    res.locals.accountName = decoded.account_firstname;
+
+    req.flash("notice", `Congratulations, your account has been updated ${req.body.account_firstname}.`);
+    res.redirect("/account/");
+    /*res.status(201).render("account/update", {
+      title: "Edit Account",
+      nav,
+    });*/
+  }
+
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccount, buildAccountEditor, updateAccount};

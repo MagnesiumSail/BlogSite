@@ -1,10 +1,14 @@
 <%- messages() %>
-<h2>Welcome <%= accountName %></h2>
+<div class="Udiv">
+  <h2 class="UwelcomeUheader">Welcome <%= accountName %></h2>
 
-<% if (accountType === "Employee" || accountType === "Admin") { %>
-  <h3>Inventory Management</h3>
-  <p><a href="/inv">Access Inventory Management</a></p>
-<% } %>
+  <% if (accountType === "Employee" || accountType === "Admin") { %>
+  <h3 class="UinventoryUheader">Inventory Management</h3>
+  <p class="UinventoryUlink"><a href="/inv" class="Uanchor">Access Inventory Management</a></p>
+  <% } %>
 
-<h3>Account Management</h3>
-<p><a href="/account/update?id=<%= clientId %>">Update Account Information</a></p>
+  <h3 class="UaccountUheader">Account Management</h3>
+  <p class="UaccountUupdateUlink">
+    <a href="/account/update?id=<%= clientId %>" class="Uanchor">Update Account Information</a>
+  </p>
+</div>

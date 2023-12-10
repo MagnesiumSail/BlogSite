@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const utilities = require("../utilities/")
 const Util = {};
+const pool = require("../database")
 
 /* ************************
  * Constructs the nav HTML unordered list
@@ -129,5 +130,31 @@ Util.checkLogin = (req, res, next) => {
     return res.redirect("/account/login")
   }
  }
+
+/* ****************************************
+ *  Check email for duplicate
+ * ************************************ 
+Util.checkDuplicateEmail = async (req, res, next) => {
+  let email = req.body.account_email;
+  let accountId = req.body.account_id;
+  try {
+    // SQL query to check for existing email, excluding the current user's account
+    const sql = "SELECT * FROM account WHERE account_email = $1 AND account_id != $2";
+    const data = await pool.query(sql, [email, accountId]);
+
+    // Check if any record exists
+    if (data.rows.length > 0) {
+      req.flash("notice", "Email already in use by another account.");
+      return res.redirect("/account/");
+    } else {
+      next();
+    }
+  } catch (error) {
+    console.error("Duplicate Email Check Error: " + error);
+    res.status(500).send("Internal Server Error");
+  }
+};*/
+
+
 
 module.exports = Util;

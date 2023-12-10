@@ -1,4 +1,5 @@
 const pool = require("../database")
+const bcrypt = require("bcryptjs");
 
 /* *****************************
 *   Register new account
@@ -39,6 +40,20 @@ async function getAccountByEmail (account_email) {
   }
 }
 
+/* *****************************
+* Return account data using id
+* ***************************** */
+async function getAccountById (account_id) {
+  try {
+    const result = await pool.query(
+      'SELECT account_id, account_firstname, account_lastname, account_email, account_type, account_password FROM account WHERE account_id = $1',
+      [account_id])
+    return result.rows[0]
+  } catch (error) {
+    return new Error("No matching id found")
+  }
+}
+
 /* ***************************
  *  Update Account info
  * ************************** */
@@ -53,4 +68,29 @@ async function updateAccount(account_firstname, account_lastname, account_email,
   }
 }
 
-module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, updateAccount};
+/* ***************************
+ *  Update Password
+ * ************************** */
+async function updatePassword(account_password, account_id) {
+  try {
+    // Updated SQL query to include RETURNING *
+    let hashedPassword
+    try {
+    // regular password and cost (salt is generated automatically)
+    hashedPassword = await bcrypt.hashSync(account_password, 10)
+    } catch (error) {
+      console.error("Hashing Error: " + error);
+      return;
+    }
+    const sql = "UPDATE account SET account_password = $1 WHERE account_id = $2 RETURNING *";
+    const data = await pool.query(sql, [hashedPassword, account_id]);
+    return data.rows[0];
+  } catch (error) {
+    console.error("Update Password Error: " + error);
+    return;
+  }
+}
+
+
+
+module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, updateAccount, updatePassword, getAccountById};

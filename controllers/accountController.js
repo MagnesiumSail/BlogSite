@@ -17,6 +17,9 @@ async function buildLogin(req, res, next) {
   });
 }
 
+/* ****************************************
+ *  Deliver Registration view
+ * *************************************** */
 async function buildRegister(req, res, next) {
   let nav = await utilities.getNav();
   res.render("account/register", {
@@ -25,6 +28,7 @@ async function buildRegister(req, res, next) {
     errors: null,
   });
 }
+
 /* ****************************************
  *  Deliver Management view
  * *************************************** */
@@ -100,6 +104,7 @@ async function accountLogin(req, res) {
   // Fetch account data based on the provided email
   const accountData = await accountModel.getAccountByEmail(account_email)
   // If no account data is found, send an error message and render the login page
+  console.log(accountData)
   if (!accountData) {
     req.flash("notice", "Please check your credentials and try again.")
     res.status(400).render("account/login", {
@@ -113,6 +118,7 @@ async function accountLogin(req, res) {
   try {
     // Compare the provided password with the stored hashed password
     if (await bcrypt.compare(account_password, accountData.account_password)) {
+      
       // If the passwords match, remove the password from the account data
       delete accountData.account_password
       // Generate an access token using JWT
@@ -121,6 +127,10 @@ async function accountLogin(req, res) {
       res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
       // Redirect to the account page after successful login
       return res.redirect("/account/")
+    } else {
+      //invalid password
+      req.flash("notice", "Invalid Credentials. Please try again.")
+      res.redirect("/account/login")
     }
   } catch (error) {
     // If there is an error in the try block, throw an access forbidden error
@@ -144,38 +154,81 @@ async function buildAccountEditor(req, res) {
  *  Process account update
  * ************************************ */
 async function updateAccount(req, res) {
-  let nav = await utilities.getNav();
-  const regResult = await accountModel.updateAccount(
-    req.body.account_firstname,
-    req.body.account_lastname,
-    req.body.account_email,
-    req.body.account_id,
-  );
-  
-  if (regResult) {
-    // Decode the JWT
-    const decoded = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET);
+  try {
+    // Update the account first
+    const updateResult = await accountModel.updateAccount(
+      req.body.account_firstname,
+      req.body.account_lastname,
+      req.body.account_email,
+      req.body.account_id,
+    );
 
-    // Update the account name
-    decoded.account_firstname = req.body.account_firstname;
+    // Check if the update was successful
+    if (updateResult) {
+      // Query the database again for the updated account info using email
+      const updatedAccount = await accountModel.getAccountById(req.body.account_id);
 
-    // Sign a new JWT with the updated data
-    const newToken = jwt.sign(decoded, process.env.ACCESS_TOKEN_SECRET);
+      if (updatedAccount) {
+        // Decode the JWT
+        const decoded = jwt.verify(req.cookies.jwt, process.env.ACCESS_TOKEN_SECRET);
 
-    // Set the new JWT as a cookie
-    res.cookie('jwt', newToken, { httpOnly: true });
+        // Update the account info in the JWT payload
+        decoded.account_firstname = updatedAccount.account_firstname;
+        decoded.account_lastname = updatedAccount.account_lastname;
+        decoded.account_email = updatedAccount.account_email;
 
-    // Update res.locals.accountName
-    res.locals.accountName = decoded.account_firstname;
+        // Sign a new JWT with the updated data
+        const newToken = jwt.sign(decoded, process.env.ACCESS_TOKEN_SECRET);
 
-    req.flash("notice", `Congratulations, your account has been updated ${req.body.account_firstname}.`);
-    res.redirect("/account/");
-    /*res.status(201).render("account/update", {
-      title: "Edit Account",
-      nav,
-    });*/
+        // Set the new JWT as a cookie
+        res.cookie('jwt', newToken, { httpOnly: true });
+
+        // Update res.locals.accountName
+        res.locals.accountName = updatedAccount.account_firstname;
+
+        req.flash("notice", `Congratulations, your account has been updated ${updatedAccount.account_firstname}.`);
+        res.redirect("/account/");
+      } else {
+        throw new Error('Unable to retrieve updated account information.');
+      }
+    } else {
+      throw new Error('Account update failed.');
+    }
+  } catch (error) {
+    console.error(error);
+    req.flash("error", error.message);
+    res.redirect("/account/update");
   }
-
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccount, buildAccountEditor, updateAccount};
+
+/* ****************************************
+ *  Process password update
+ * ************************************ */
+async function updatePassword(req, res) {
+  console.log(req.body)
+  const regResult = await accountModel.updatePassword(
+    req.body.account_new_password,
+    req.body.account_id,
+  );
+  if(regResult) {
+    console.log("Password updated");
+    req.flash("notice", `Congratulations, your password has been updated.`);
+    res.redirect("/account/");
+  } else {
+    console.log("Password update failed");
+    req.flash("notice", `Sorry, your password update failed.`);
+    res.redirect("/account/");
+  }
+}
+
+/* ****************************************
+ *  Process Logout request
+ * *************************************** */
+async function accountLogout(req, res) {
+  console.log("Logout");
+  res.clearCookie("jwt");
+  res.redirect("/");
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccount, buildAccountEditor, updateAccount, updatePassword, accountLogout};

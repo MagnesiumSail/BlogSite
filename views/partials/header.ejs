@@ -8,7 +8,7 @@
             <!-- Visible only when the client is logged in -->
             <!-- I need to do all the checking here, not passing a variable named accountName-->
             <a href="/account">Welcome <%= accountName %> | </a>
-            <a href="/logout">Logout</a>
+            <a href="/account/logout">Logout</a>
           <% } else { %>
             <!-- Visible only when the client is not logged in -->
             <a title="Click to log in" href="/account/login">My Account</a>

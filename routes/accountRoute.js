@@ -8,11 +8,15 @@ const regValidate = require("../utilities/account-validation");
 // Route to build account editor
 router.get("/update", utilities.checkLogin, utilities.handleErrors(accountController.buildAccountEditor));
 // Route to handle update account
-router.post("/update", utilities.checkLogin, utilities.handleErrors(accountController.updateAccount));
+router.post("/update", utilities.checkLogin, regValidate.updateAccountRules(), regValidate.checkUpdateData, utilities.handleErrors(accountController.updateAccount));
+//Route to handle change password
+router.post("/change-password", utilities.checkLogin, regValidate.updatePasswordRules(), regValidate.checkUpdatePasswordData, utilities.handleErrors(accountController.updatePassword));
 // Route to build account view
 router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildAccount))
 // Route to build inventory by account view
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
+// Route to handle logout
+router.get("/logout", utilities.handleErrors(accountController.accountLogout));
 // Route to build register by register view
 router.get(
   "/register",

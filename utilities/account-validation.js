@@ -2,6 +2,7 @@ const utilities = require(".");
 const { body, validationResult } = require("express-validator");
 const validate = {};
 const accountModel = require("../models/account-model");
+const pool = require("../database")
 
 validate.checkAccountType = (req, res, next) => {
   // Get the decoded JWT from res.locals.accountData
@@ -66,6 +67,64 @@ validate.registationRules = () => {
 };
 
 /*  **********************************
+*  updating account Rules
+* ********************************* */
+validate.updateAccountRules = () => {
+  return [
+    // First name validation
+    body("account_firstname")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Please provide a first name."),
+
+    // Last name validation
+    body("account_lastname")
+      .trim()
+      .isLength({ min: 2 })
+      .withMessage("Please provide a last name."),
+
+    // Email validation
+    body("account_email")
+      .trim()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required.")
+      .custom(async (account_email, { req }) => {
+        const accountId = req.body.account_id;
+
+        // SQL query to check for existing email, excluding the current user's account
+        const sql = "SELECT * FROM account WHERE account_email = $1 AND account_id != $2";
+        const data = await pool.query(sql, [account_email, accountId]);
+
+        // If an account other than the current one is using the email
+        if (data.rows.length > 0) {
+          throw new Error("Email already in use by another account.");
+        }
+      }),
+  ];
+};
+
+/*  **********************************
+*  Update Password Validation Rules
+* ********************************* */
+validate.updatePasswordRules = () => {
+  return [
+    // Password validation
+    body("account_new_password")
+      .trim()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password does not meet requirements."),
+  ];
+};
+
+
+/*  **********************************
 *  Login Data Validation Rules
 * ********************************* */
 validate.loginRules = () => {
@@ -113,19 +172,43 @@ validate.checkRegData = async (req, res, next) => {
   next();
 };
 
-validate.checkClassAdd = async (req, res, next) => {
-  const { classification_name } = req.body;
-  let errors = [];
-  errors = validationResult(req);
-  if(!errors.isEmpty()) {
-    let nav = await utilities.getNav();
-    res.render("inv/add/classification", {
-      errors,
-      title: "Classification Additions",
-      nav,
-      classification_name,
-    });
+/* ******************************
+ * Check Update Account Data and 
+ * return errors or continue to login
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const { account_firstname, account_lastname, account_email } = req.body;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    
+    // Extracting just the error messages from the validation result
+    const errorMessages = errors.array().map(err => err.msg);
+    req.flash('errorMessages', errorMessages);
+
+    return res.redirect('/account/update');
   }
+
+  next();
+};
+
+/* ******************************
+ * Check Password Update Data and 
+ * return errors or continue to login
+ * ***************************** */
+validate.checkUpdatePasswordData = async (req, res, next) => {
+  const { account_new_password } = req.body;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    
+    // Extracting just the error messages from the validation result
+    const errorMessages = errors.array().map(err => err.msg);
+    req.flash('errorMessages', errorMessages);
+    return res.redirect('/account/update');
+  }
+
+  next();
 }
 
 /* ******************************
